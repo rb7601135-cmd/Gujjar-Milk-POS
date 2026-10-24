@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-pure-white: #FFFFFF;
+    --color-neutral-bg: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-surface-hover: #F1F5F9;
+    --color-border-subtle: rgba(226, 232, 240, 0.85);
+    --color-border-focus: #16A34A;
+    --color-dairy-green: #16A34A;
+    --color-dairy-green-dark: #15803D;
+    --color-dairy-green-subtle: #F0FDF4;
+    --color-butter-gold: #F59E0B;
+    --color-butter-gold-hover: #D97706;
+    --color-butter-gold-subtle: #FFFBEB;
+    --color-slate-head: #0F172A;
+    --color-slate-body: #334155;
+    --color-slate-subtle: #64748B;
+  }
+
+  body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.font-heading {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-urdu {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  line-height: 1.8;
+}
+
+/* Glassmorphism & Modern Card styling */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.card-elevation {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-elevation:hover {
+  border-color: rgba(203, 213, 225, 0.9);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* Custom Sleek Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+/* Print styling for direct POS thermal receipts */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  #thermal-print-area, #thermal-print-area * {
+    visibility: visible;
+  }
+  
+  #thermal-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 78mm;
+    margin: 0;
+    padding: 4mm 5mm;
+    background: #fff !important;
+    color: #000 !important;
+    font-family: 'Courier New', Courier, monospace, 'Noto Nastaliq Urdu';
+    font-size: 11px;
+    line-height: 1.35;
+    display: block !important;
+  }
+
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "gujar-milk",
+  "version": "1.0.0",
+  "description": "Gujjar Milk (گجر ملک شاپ) — Dairy POS, Cashier Billing, Inventory & Sales Management System",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "node server/server.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"green,yellow\" \"node server/server.js\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pos",
+    "dairy",
+    "milk-shop",
+    "billing",
+    "urdu-pos",
+    "cashier",
+    "invoice"
+  ],
+  "author": "Gujjar Milk",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "morgan": "^1.10.1"
+  }
+}
