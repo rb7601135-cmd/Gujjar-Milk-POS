@@ -12,13 +12,14 @@ import ProcessingView from './components/Processing/ProcessingView';
 import ReconciliationView from './components/Reconciliation/ReconciliationView';
 import ReceiptModal from './components/POS/ReceiptModal';
 import { fetchSettings, fetchProducts, fetchReportsSummary } from './services/api';
+import { DEFAULT_PRODUCTS } from './services/defaultData';
 import { generateReceiptPDF } from './utils/pdfGenerator';
 import './App.css';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('pos');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(DEFAULT_PRODUCTS);
   const [cart, setCart] = useState([]);
   const [heldCarts, setHeldCarts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,8 +77,10 @@ export default function App() {
       if (settingsData && Object.keys(settingsData).length > 0) {
         setSettings((prev) => ({ ...prev, ...settingsData }));
       }
-      if (productsData) {
+      if (productsData && productsData.length > 0) {
         setProducts(productsData);
+      } else {
+        setProducts(DEFAULT_PRODUCTS);
       }
       if (summaryData?.today) {
         setTodayStats(summaryData.today);
