@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { playBeep, playSuccess, playWarning } from '../../utils/sound';
+import { createSale } from '../../services/api';
 
 export default function POSView({
   products,
@@ -262,18 +263,7 @@ export default function POSView({
         notes: `${packagingType !== 'none' ? `[Packaging: ${packagingType === 'pouch' ? 'Shop Pouch (+Rs 5)' : 'Plastic Bottle (+Rs 20)'}] ` : ''}${orderNotes.trim()}`.trim(),
       };
 
-      const res = await fetch('/api/sales', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(salePayload),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Failed to complete sale transaction');
-      }
-
-      const data = await res.json();
+      const completedSale = await createSale(salePayload);
       playSuccess(soundEnabled);
 
       // Trigger celebratory confetti
@@ -293,7 +283,7 @@ export default function POSView({
       setCustomerPhone('');
 
       if (onCheckoutSuccess) {
-        onCheckoutSuccess(data.sale, directPrint, downloadPdfDirectly);
+        onCheckoutSuccess(completedSale, directPrint, downloadPdfDirectly);
       }
     } catch (err) {
       console.error('Checkout error:', err);

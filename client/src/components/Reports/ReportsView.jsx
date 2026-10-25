@@ -54,7 +54,16 @@ export default function ReportsView({
     );
   }
 
-  const { today, yesterday, allTime, paymentMethods, topItems, last7DaysTrend, hourlyStats, lowStockCount } = summary;
+  const {
+    today = {},
+    yesterday = {},
+    allTime = {},
+    paymentMethods = [],
+    topItems = [],
+    last7DaysTrend = [],
+    hourlyStats = [],
+    lowStockCount = 0,
+  } = summary || {};
 
   // Find max daily revenue for chart scaling
   const maxDayRevenue = Math.max(1, ...(last7DaysTrend || []).map((d) => d.daily_revenue));

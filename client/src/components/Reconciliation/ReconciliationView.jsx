@@ -106,7 +106,7 @@ export default function ReconciliationView({ lang = 'en', settings = {} }) {
     window.print();
   }
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="py-24 text-center text-slate-400">
         <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-3 text-emerald-600" />
@@ -115,7 +115,7 @@ export default function ReconciliationView({ lang = 'en', settings = {} }) {
     );
   }
 
-  const { milkBalancing, cashBalancing, shift } = data;
+  const { milkBalancing = {}, cashBalancing = {}, shift = {} } = data;
 
   return (
     <div className="space-y-6">
