@@ -14,6 +14,7 @@ import ReceiptModal from './components/POS/ReceiptModal';
 import { fetchSettings, fetchProducts, fetchReportsSummary } from './services/api';
 import { DEFAULT_PRODUCTS } from './services/defaultData';
 import { generateReceiptPDF } from './utils/pdfGenerator';
+import { Calculator, Truck, CalendarDays, Receipt, Menu } from 'lucide-react';
 import './App.css';
 
 export default function App() {
@@ -176,7 +177,7 @@ export default function App() {
         />
 
         {/* View Routing */}
-        <main className="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+        <main className="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC] pb-16 lg:pb-0">
           {activeTab === 'pos' && (
             <POSView
               products={products}
@@ -194,25 +195,25 @@ export default function App() {
           )}
 
           {activeTab === 'procurement' && (
-            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
               <ProcurementView lang={lang} settings={settings} />
             </div>
           )}
 
           {activeTab === 'subscriptions' && (
-            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
               <SubscriptionsView lang={lang} settings={settings} />
             </div>
           )}
 
           {activeTab === 'processing' && (
-            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
               <ProcessingView lang={lang} settings={settings} />
             </div>
           )}
 
           {activeTab === 'reconciliation' && (
-            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
               <ReconciliationView lang={lang} settings={settings} />
             </div>
           )}
@@ -259,6 +260,79 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar (Fixed for high-speed one-hand cashier access) */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] px-2 py-1 flex items-center justify-around">
+        <button
+          type="button"
+          onClick={() => setActiveTab('pos')}
+          className={`flex flex-col items-center py-1.5 px-3 rounded-xl transition-all relative ${
+            activeTab === 'pos' ? 'text-emerald-600 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <div className="relative">
+            <Calculator className="w-5 h-5" />
+            {cart.length > 0 && (
+              <span className="absolute -top-1.5 -right-2.5 bg-emerald-600 text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-bounce">
+                {cart.length}
+              </span>
+            )}
+          </div>
+          <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+            {lang === 'ur' ? 'کاؤنٹر' : 'POS'}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('procurement')}
+          className={`flex flex-col items-center py-1.5 px-3 rounded-xl transition-all ${
+            activeTab === 'procurement' ? 'text-emerald-600 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Truck className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+            {lang === 'ur' ? 'گوالہ' : 'Intake'}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('subscriptions')}
+          className={`flex flex-col items-center py-1.5 px-3 rounded-xl transition-all ${
+            activeTab === 'subscriptions' ? 'text-emerald-600 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <CalendarDays className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+            {lang === 'ur' ? 'کارڈز' : 'Cards'}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('sales')}
+          className={`flex flex-col items-center py-1.5 px-3 rounded-xl transition-all ${
+            activeTab === 'sales' ? 'text-emerald-600 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Receipt className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+            {lang === 'ur' ? 'سیلز' : 'Sales'}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          className="flex flex-col items-center py-1.5 px-3 rounded-xl text-slate-500 hover:text-slate-800 transition-all"
+        >
+          <Menu className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 tracking-tight font-medium">
+            {lang === 'ur' ? 'مینو' : 'More'}
+          </span>
+        </button>
+      </nav>
 
       {/* Receipt Modal (Thermal slip preview, A4 preview, direct print, PDF download) */}
       <ReceiptModal

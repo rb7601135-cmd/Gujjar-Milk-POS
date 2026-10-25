@@ -54,6 +54,7 @@ export default function POSView({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cartError, setCartError] = useState('');
   const [packagingType, setPackagingType] = useState('none'); // 'none', 'pouch', 'bottle'
+  const [mobileActiveTab, setMobileActiveTab] = useState('products'); // 'products' or 'cart' for mobile
 
   // Custom weight modal for decimal items
   const [weightModalProduct, setWeightModalProduct] = useState(null);
@@ -299,8 +300,50 @@ export default function POSView({
 
   return (
     <div className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-61px)] overflow-hidden bg-[#F8FAFC]">
+      
+      {/* Mobile Segmented View Switcher (Only on screens < lg) */}
+      <div className="lg:hidden p-2 bg-slate-100 border-b border-slate-200/90 flex items-center gap-1.5 flex-shrink-0">
+        <button
+          type="button"
+          onClick={() => setMobileActiveTab('products')}
+          className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            mobileActiveTab === 'products'
+              ? 'bg-white text-emerald-700 shadow-xs ring-1 ring-slate-200'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Milk className="w-3.5 h-3.5 text-emerald-600" />
+          <span>{lang === 'ur' ? 'اشیاء' : 'Products'} ({filteredProducts.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMobileActiveTab('cart')}
+          className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 relative ${
+            mobileActiveTab === 'cart'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'bg-white text-slate-700 hover:bg-slate-50'
+          }`}
+        >
+          <ShoppingBag className="w-3.5 h-3.5" />
+          <span>{lang === 'ur' ? 'بل و کیشیر' : 'Order Bill'}</span>
+          <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full font-black ${
+            mobileActiveTab === 'cart' ? 'bg-white text-emerald-700' : 'bg-emerald-100 text-emerald-800'
+          }`}>
+            {cart.length}
+          </span>
+          {cart.length > 0 && (
+            <span className="text-[11px] font-mono font-bold">
+              • {currency} {grandTotal.toFixed(0)}
+            </span>
+          )}
+        </button>
+      </div>
+
       {/* LEFT/CENTER AREA: Categories & Product Catalog Grid */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden border-r border-slate-200/80">
+      <div className={`flex-1 flex-col h-full overflow-hidden border-r border-slate-200/80 ${
+        mobileActiveTab === 'products' ? 'flex' : 'hidden lg:flex'
+      }`}>
         
         {/* Top Filter Bar: Category Pills */}
         <div className="p-3 sm:px-5 sm:py-3.5 bg-white border-b border-slate-200/80 flex items-center justify-between gap-3 shadow-2xs">
@@ -379,7 +422,7 @@ export default function POSView({
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3.5 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2.5 sm:gap-4">
               {filteredProducts.map((prod) => {
                 const isLowStock = prod.stock <= prod.min_stock && prod.stock > 0;
                 const isOutOfStock = prod.stock <= 0;
@@ -396,7 +439,7 @@ export default function POSView({
                     onClick={() => handleAddToCart(prod, 1)}
                   >
                     {/* Top Image Container */}
-                    <div className="relative h-32 sm:h-36 w-full overflow-hidden bg-slate-100">
+                    <div className="relative h-28 sm:h-36 w-full overflow-hidden bg-slate-100">
                       <img
                         src={prod.image_url || defaultDairyPlaceholder}
                         alt={prod.name_en}
@@ -517,14 +560,55 @@ export default function POSView({
             </div>
           )}
         </div>
+
+        {/* Mobile Floating Bottom Bar for Fast Checkout (Only visible when items exist and in products tab) */}
+        {cart.length > 0 && (
+          <div className="lg:hidden p-2.5 bg-white border-t border-slate-200/90 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3 flex-shrink-0 z-20">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => setMobileActiveTab('cart')}>
+              <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                <ShoppingBag className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                  {cart.length} {cart.length === 1 ? 'item' : 'items'} in bill
+                </div>
+                <div className="font-heading font-black text-sm text-slate-900">
+                  {currency} {grandTotal.toFixed(0)}
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setMobileActiveTab('cart')}
+              className="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-600/25 flex items-center gap-1.5 active:scale-95 transition-all"
+            >
+              <span>{lang === 'ur' ? 'بل و کیشیر' : 'Review & Pay'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* RIGHT SIDE: Interactive Bill Panel */}
-      <div className="w-full lg:w-[410px] xl:w-[450px] bg-white flex flex-col h-full shadow-lg z-10 border-l border-slate-200/80">
+      <div className={`w-full lg:w-[410px] xl:w-[450px] bg-white flex-col h-full shadow-lg z-10 border-l border-slate-200/80 ${
+        mobileActiveTab === 'cart' ? 'flex' : 'hidden lg:flex'
+      }`}>
         
         {/* Panel Header */}
-        <div className="p-3.5 sm:px-4 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+        <div className="p-3 sm:px-4 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {/* Mobile Back Button to Catalog */}
+            <button
+              type="button"
+              onClick={() => setMobileActiveTab('products')}
+              className="lg:hidden p-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition-colors"
+              title="Return to Product Grid"
+            >
+              <Milk className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Items</span>
+            </button>
+
             <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
               <ShoppingBag className="w-4 h-4" />
             </div>

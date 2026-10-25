@@ -13,7 +13,8 @@ import {
   Truck,
   CalendarDays,
   Flame,
-  Scale
+  Scale,
+  X
 } from 'lucide-react';
 
 export default function Sidebar({
@@ -95,18 +96,43 @@ export default function Sidebar({
       {sidebarOpen && (
         <div 
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-slate-900/30 backdrop-blur-xs z-30 lg:hidden transition-opacity"
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 lg:hidden transition-opacity"
         />
       )}
 
-      {/* Slim Modern Sidebar Container */}
+      {/* Modern Sidebar Container */}
       <aside
-        className={`fixed lg:static top-[61px] bottom-0 left-0 z-35 w-68 bg-white border-r border-slate-200/80 flex flex-col justify-between transition-all duration-300 shadow-xl lg:shadow-none ${
+        className={`fixed lg:static top-0 lg:top-[61px] bottom-0 left-0 z-50 w-72 sm:w-80 lg:w-68 bg-white border-r border-slate-200/80 flex flex-col justify-between transition-all duration-300 shadow-2xl lg:shadow-none ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
+        {/* Mobile Header (Visible only on mobile/tablet) */}
+        <div className="lg:hidden p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">
+              <Milk className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="font-heading font-extrabold text-sm tracking-tight text-white">
+                {settings.shop_name?.split('(')[0]?.trim() || 'Gujjar Milk'}
+              </div>
+              <div className="text-[10px] text-emerald-400 font-urdu font-bold">
+                گجر ملک شاپ
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(false)}
+            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            title="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
         {/* Navigation list */}
-        <div className="p-3.5 space-y-1.5 overflow-y-auto">
+        <div className="p-3.5 space-y-1.5 overflow-y-auto flex-1">
           <div className="px-3 pt-2 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
             {lang === 'ur' ? 'مین مینو و نیویگیشن' : 'Commercial Suite'}
           </div>

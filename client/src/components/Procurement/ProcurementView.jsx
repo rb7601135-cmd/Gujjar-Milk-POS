@@ -371,7 +371,7 @@ export default function ProcurementView({ lang = 'en', settings = {} }) {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[620px]">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                     <th className="py-2.5 px-3">Gawala / Farmer</th>

@@ -84,7 +84,7 @@ export default function SettingsView({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-61px)] overflow-y-auto bg-[#F8FAFC] p-4 sm:p-6 space-y-6">
+    <div className="flex-1 flex flex-col h-[calc(100vh-61px)] overflow-y-auto bg-[#F8FAFC] p-4 sm:p-6 pb-24 sm:pb-6 space-y-6">
       
       {/* Top Banner */}
       <div className="flex items-center justify-between">

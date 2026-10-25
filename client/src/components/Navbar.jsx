@@ -30,6 +30,7 @@ export default function Navbar({
   onSelectPOS
 }) {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const searchInputRef = useRef(null);
 
   // Live active clock
@@ -79,32 +80,32 @@ export default function Navbar({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-      <div className="flex items-center justify-between px-3 sm:px-6 py-2.5 gap-2 sm:gap-4">
+      <div className="flex items-center justify-between px-2.5 sm:px-6 py-2 sm:py-2.5 gap-1.5 sm:gap-4">
         {/* Left: Mobile Toggle & High-End Dairy Branding */}
-        <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
           <button 
             type="button"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/20 lg:hidden"
+            className="p-1.5 sm:p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/20 lg:hidden"
             title="Toggle Navigation Menu"
             aria-label="Toggle Navigation"
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-2.5 cursor-pointer select-none" onClick={onSelectPOS}>
+          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none" onClick={onSelectPOS}>
             {/* Pure Milk Icon Badge */}
-            <div className="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 transition-transform active:scale-95 group">
-              <Milk className="w-5 h-5 transition-transform group-hover:scale-110" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 transition-transform active:scale-95 group">
+              <Milk className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110" />
             </div>
 
             <div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-heading font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">
+              <div className="flex items-baseline gap-1 sm:gap-1.5">
+                <span className="font-heading font-extrabold text-sm sm:text-xl tracking-tight text-slate-900 truncate max-w-[110px] xs:max-w-[140px] sm:max-w-none">
                   {settings.shop_name?.split('(')[0]?.trim() || 'Gujjar Milk'}
                 </span>
-                <span className="font-urdu text-xs sm:text-sm font-bold text-emerald-600">
-                  گجر ملک شاپ
+                <span className="font-urdu text-[11px] sm:text-sm font-bold text-emerald-600">
+                  گجر ملک
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] font-medium text-slate-400 -mt-0.5 hidden md:block">
@@ -114,7 +115,7 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Center: Global Quick-Search Input with Hotkey Ctrl+K */}
+        {/* Center: Global Quick-Search Input with Hotkey Ctrl+K (Desktop/Tablet) */}
         <div className="flex-1 max-w-md mx-2 sm:mx-4 hidden sm:block">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -140,8 +141,21 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Right: Live Clock, Shift Indicator, Today Revenue Badge & Controls */}
-        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+        {/* Right: Mobile Search Toggle, Today Revenue Badge & Controls */}
+        <div className="flex items-center gap-1 sm:gap-2.5 flex-shrink-0">
+          {/* Mobile Search Toggle Button */}
+          <button
+            type="button"
+            onClick={() => {
+              setMobileSearchOpen(!mobileSearchOpen);
+              if (onSelectPOS) onSelectPOS();
+            }}
+            className="sm:hidden p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
+            title="Search products"
+            aria-label="Search"
+          >
+            <Search className="w-4 h-4" />
+          </button>
           {/* Live Clock & Shift Badge */}
           <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700">
             <Clock className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
@@ -212,6 +226,35 @@ export default function Navbar({
           </button>
         </div>
       </div>
+
+      {/* Expandable Mobile Search Row */}
+      {mobileSearchOpen && (
+        <div className="sm:hidden px-3 pb-2.5 pt-1 border-t border-slate-100 bg-slate-50/90 animate-in slide-in-from-top-1 duration-150">
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+            <input
+              type="text"
+              autoFocus
+              value={searchQuery || ''}
+              onChange={(e) => {
+                if (onSelectPOS) onSelectPOS();
+                setSearchQuery(e.target.value);
+              }}
+              placeholder={lang === 'ur' ? 'اشیاء تلاش کریں (مثلاً دودھ، دیسی گھی)...' : 'Search dairy products, milk, sweets...'}
+              className="w-full pl-9 pr-8 py-2 bg-white text-xs text-slate-800 placeholder-slate-400 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 shadow-2xs"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }

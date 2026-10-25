@@ -273,32 +273,32 @@ export default function ReceiptModal({
         </div>
 
         {/* Modal Bottom Actions */}
-        <div className="p-3.5 sm:p-4 bg-white border-t border-slate-200 flex items-center justify-between gap-2">
+        <div className="p-3 sm:p-4 bg-white border-t border-slate-200 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
           <button
             type="button"
             onClick={onNewOrder || onClose}
-            className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors order-3 sm:order-1 text-center"
           >
             New Order
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="w-full sm:w-auto flex items-center gap-2 order-1 sm:order-2">
             <button
               type="button"
               onClick={handleDownloadPDF}
-              className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform"
+              className="flex-1 sm:flex-initial px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-transform"
             >
               <Download className="w-3.5 h-3.5 text-amber-400" />
-              <span>Download PDF</span>
+              <span>PDF</span>
             </button>
 
             <button
               type="button"
               onClick={handlePrint}
-              className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/20 active:scale-95 transition-transform"
+              className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 active:scale-95 transition-transform"
             >
               <Printer className="w-4 h-4" />
-              <span>Print Receipt</span>
+              <span>Print</span>
             </button>
           </div>
         </div>

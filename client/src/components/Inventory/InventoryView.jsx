@@ -268,7 +268,7 @@ export default function InventoryView({
       <div className="flex-1 overflow-y-auto p-4 sm:p-5">
         <div className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[640px]">
               <thead className="bg-slate-50 text-slate-700 font-extrabold border-b border-slate-200 uppercase tracking-wider text-[10px]">
                 <tr>
                   <th className="py-3 px-4">Item & Code</th>

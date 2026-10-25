@@ -72,7 +72,7 @@ export default function ReportsView({
   const defaultDairyPlaceholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' fill='%23F8FAFC'%3E%3Crect width='400' height='300' fill='%23F1F5F9'/%3E%3Ccircle cx='200' cy='150' r='60' fill='%23DCFCE7'/%3E%3Cpath d='M180 110 h40 v20 h-40 z M170 130 h60 l-10 80 h-40 z' fill='%2316A34A' opacity='0.7'/%3E%3C/svg%3E";
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-61px)] overflow-y-auto bg-[#F8FAFC] p-4 sm:p-6 space-y-6">
+    <div className="flex-1 flex flex-col h-[calc(100vh-61px)] overflow-y-auto bg-[#F8FAFC] p-4 sm:p-6 pb-24 sm:pb-6 space-y-6">
       
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
